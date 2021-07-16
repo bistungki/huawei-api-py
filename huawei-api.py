@@ -17,7 +17,10 @@ from flask import Flask
 app = Flask(__name__)
 def ctx():
     con =  user.quick_login("admin", "redkocin", "192.168.8.1")
+    print(con)
     return con
+def sendsms():
+      sms.send_sms(ctx(),"082393031869", "Modem reboot")
 
 def getsms():
     smss = sms.get_sms(ctx(),1)
@@ -46,14 +49,14 @@ def modemon():
 
 @app.route("/modemstatus")
 def modemstatus():
+    time.sleep(2)
     return  json.dumps({"status": dialup.get_mobile_status(ctx())})
 
 @app.route("/reboot")
 def reboot():
-    sms.send_sms(ctx,"082393031869", "Modem reboot")
-    time.sleep(10)
-    return json.dumps({"reboot" : device.reboot(ctx())})
-
+    d = sendsms()
+    time.sleep(5)
+    return json.dumps({"reboot" : device.reboot(ctx()), "message" : d})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

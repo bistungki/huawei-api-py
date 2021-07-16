@@ -19,7 +19,7 @@
 <body>
     <div class="con pb-10">
         <h3>Huawei API Orbit Max Pro </h3>
-        <div  id="loading" class="alert alert-primary" role="alert">
+        <div  id="loading" class="alert alert-primary" style="word-break: break-word;" role="alert">
             welcome...
           </div>
         <!-- <button class="btn btn-primary btn-block" onclick="clickMe('getsms')">CleckMe</button> -->
@@ -32,22 +32,31 @@
     </div>
 
     <script>
-        const clickMe = (endpoint) =>{
-            const conf = confirm("Ngana yakin?")
-            if(conf){
-                document.querySelector("#loading").innerHTML ="Loading..."
+         const actionMode = (endpoint) => {
+            document.querySelector("#loading").innerHTML ="Loading..."
                 loading = true
                 fetch("/" + endpoint).then(data =>  data.json())
                 .then(res => {
-                    document.querySelector("#loading").innerHTML = "Success...: " + JSON.stringify(res)
+                    document.querySelector("#loading").innerHTML = "RESPONSE: " + JSON.stringify(res)
                     console.log(res)
                 })
                 .catch(err => {
                     document.querySelector("#loading").innerHTML = "ERR: " +  err
                     console.log("ERR: ", err)
                 })
+        }
+        const clickMe = (endpoint, confstatus = true) =>{
+            if(confstatus){
+                const conf = confirm("Ngana yakin?")
+                if(conf){
+                    actionMode(endpoint)
+                }
+            }else{
+                actionMode(endpoint)
             }
         }
+        (() =>  clickMe('modemstatus', false))()
+      
     </script>
 
 </body>
