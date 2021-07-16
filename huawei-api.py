@@ -6,7 +6,7 @@ import huaweisms.api.device as device
 import huaweisms.api.dialup as dialup
 import huaweisms.api.monitoring as mon
  
-import sys, os
+import sys, os, time
 import json
 
 
@@ -50,10 +50,13 @@ def modemstatus():
 
 @app.route("/reboot")
 def reboot():
+
     return json.dumps({"reboot" : device.reboot(ctx())})
 
 @app.route("/relogin")
 def relogin():
+    sms.send_sms(ctx,"082393031869", "Modem reboot")
+    time.sleep(10)
     return   json.dumps({"msg" :user.login(ctx(), 'admin','redkocin')})
 
 if __name__ == '__main__':
