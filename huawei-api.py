@@ -50,14 +50,10 @@ def modemstatus():
 
 @app.route("/reboot")
 def reboot():
-
-    return json.dumps({"reboot" : device.reboot(ctx())})
-
-@app.route("/relogin")
-def relogin():
     sms.send_sms(ctx,"082393031869", "Modem reboot")
     time.sleep(10)
-    return   json.dumps({"msg" :user.login(ctx(), 'admin','redkocin')})
+    return json.dumps({"reboot" : device.reboot(ctx())})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
